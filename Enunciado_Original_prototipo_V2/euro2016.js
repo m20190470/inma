@@ -1,6 +1,4 @@
 /** 
- * Aplicações multimédia - Trabalho Prático 1
- * (c) Cláudio Barradas, 2021
  * 
  */
 
