@@ -70,7 +70,7 @@
 	//var andou = false;
 	var animationHandler;
 	var barraVidaPadawan = undefined;
-	var barraVidaHanSolo = undefined
+	var barraVidaHanSolo = undefined;
 	var barraVidaNemoidian = undefined;
 	var barraVidaInimigo_Cantina = undefined;
 	var gameTimer = undefined;
@@ -80,14 +80,11 @@
 	var assets = [];
 
 	var GameSounds = {
-		AMBIENTE: {}
-	};
-	
-	/* var GameSoundsHan = {
+
 		HAN_SOLO: {},
 		LASER: {},
 		AMBIENTE: {}
-	}; */
+	};
 	
     
     var GameStates = {
@@ -129,36 +126,45 @@
 
         // carregar as spritesheets
 		var spBackground = new SpriteSheet();
-		spBackground.load("assets//background.png", "assets//background.json", loaded);
+		spBackground.load("assets//background2.png", "assets//Background2.json", loaded);
 		assets.push(spBackground);
 
-		var spBackground2 = new SpriteSheet();
+		/*var spBackground2 = new SpriteSheet();
 		spBackground2.load("assets//Background2.png", "assets//Background2.json", loaded);
 		assets.push(spBackground2);
 			
 		var spPadawan = new SpriteSheet();
 		spPadawan.load("assets//Padawan.png", "assets//Padawan.json", loaded);
-		assets.push(spPadawan);
+		assets.push(spPadawan);*/
 
 		var spHanSolo = new SpriteSheet();
 		spHanSolo.load("assets//Han_Solo.png", "assets//Han_Solo.json", loaded);
 		assets.push(spHanSolo);
 
-		var spNemoidian = new SpriteSheet();
+		/*var spNemoidian = new SpriteSheet();
 		spNemoidian.load("assets//Nemoidian_Guard.png", "assets//Nemoidian_Guard.json", loaded);
-		assets.push(spNemoidian);
+		assets.push(spNemoidian);*/
 
 		var spInimigo_Cantina = new SpriteSheet();
 		spInimigo_Cantina.load("assets//Inimigo_Cantina.png", "assets//Inimigo_Cantina.json", loaded);
 		assets.push(spInimigo_Cantina);
 
 		//carregar os sons
-		gSoundManager.loadAsync("sounds/Intro.mp3", function (so) {
-		GameSounds.AMBIENTE.INTRO = so;
-		loaded("sounds/Intro.mp3")
+		gSoundManager.loadAsync("sounds/Nivel2_Fundo.mp3", function (so) {
+			GameSounds.AMBIENTE.FUNDO = so;
+			loaded("sounds/Nivel2_Fundo.mp3")
+		});
+		assets.push(GameSounds.AMBIENTE.FUNDO);
+
+		gSoundManager.loadAsync("sounds/Tiro_HanSolo.mp3", function (so) {
+			GameSounds.HAN_SOLO.Ataque = so;
+			loaded("sounds/Tiro_HanSolo.mp3")
 
 		
 	});
+
+	//Parte do código da versão inicial comentada
+	/*
 	assets.push(GameSounds.AMBIENTE.INTRO);
 
 		gSoundManager.loadAsync("sounds/Som_Fundo.mp3", function (so) {
@@ -184,13 +190,13 @@
 		loaded("sounds/Tiro_HanSolo.mp3")
 
 
-	}); */
+	});*/
 
 	gSoundManager.loadAsync("sounds/Final.mp3", function (so) {
 		GameSounds.AMBIENTE.FINAL = so;
 		loaded("sounds/Final.mp3")
 	});
-	/* assets.push(GameSounds.HAN_SOLO.Ataque);*/
+	assets.push(GameSounds.HAN_SOLO.Ataque);
 }
 
         function loaded(assetName) {
@@ -203,25 +209,25 @@
 
         // Se já conseguimos chegar aqui, os assets estão carregados! Podemos começar a criar 
 		// e configurar os elementos do jogo
-		assetsLoadInfo.innerHTML = "Jogo Carregado! Por favor escolha a sua personagem para iniciar o jogo...";
+		assetsLoadInfo.innerHTML = "Jogo Carregado! Por favor pressione qualquer letra/número para iniciar o jogo...";
 		
 		gameState = GameStates.LOADED;
 		//update();
 
 		GameSounds.AMBIENTE.INTRO.play(true, 1);
-       // window.addEventListener("keypress",setupGame,false); // espera por uma tecla pressionada para começar
+        window.addEventListener("keypress",setupGame,false); // espera por uma tecla pressionada para começar
 
-		document.getElementById("charPadawan").addEventListener("mousedown", setupGame);
-		document.getElementById("charHan").addEventListener("mousedown", setupGame2);
+		//document.getElementById("charPadawan").addEventListener("mousedown", setupGame);
+		//document.getElementById("charHan").addEventListener("mousedown", setupGame2);
 	}
 
     function setupGame(){
 	 
-		window.removeEventListener("mousedown",setupGame,false);
+		window.removeEventListener("keypress",setupGame,false);
 		
 		loadInfo.classList.toggle("hidden"); // esconder a informaçao de loading
 	
-		oBackground = new Background(gSpriteSheets['assets//background.png'], 0, 0);
+		oBackground = new Background(gSpriteSheets['assets//Background2.png'], 0, 0);
 		//oBackground.x=Math.floor((oBackground.width/3)*-2);
 		entities.push(oBackground);
 		
@@ -286,11 +292,11 @@
 		 
 		// ajustar os canvas ao tamanho da janela
 		canvases.background.canvas.width = window.innerWidth;
-		canvases.background.canvas.height = oBackground2.height;
+		canvases.background.canvas.height = oBackground.height;
 		canvases.entities.canvas.width = window.innerWidth;
-		canvases.entities.canvas.height = oBackground2.height;
+		canvases.entities.canvas.height = oBackground.height;
 		canvases.components.canvas.width = window.innerWidth;
-		canvases.components.canvas.height = oBackground2.height;
+		canvases.components.canvas.height = oBackground.height;
 		
 		//oBackground.y=oBackground.height-window.innerHeight;
 		canvases.background.canvas.style.backgroundColor = "#DEF4FE";
@@ -452,8 +458,8 @@
 					if(umNemoidian.hitTestRectangle(osLancamentos[i])&&!umPadawan.isColliding){
 						umNemoidian.isColliding=true; 
 						osLancamentos[i].active=false;     //faz os lasers desaparecer quando bate no inimigo
-						umNemoidian.energia -= osLancamentos[i].danolightsaber;
-						barraVidaNemoidian.update(umNemoidian.energia);
+						umNemoidian.vida -= osLancamentos[i].danolightsaber;
+						barraVidaNemoidian.update(umNemoidian.vida);
 						
 					}} else {
 						umNemoidian.atingido();
@@ -473,8 +479,8 @@
 					if(!umPadawan.killed){	
 					umNemoidian.ataque();
 					umNemoidian.x-=3;
-					umPadawan.energia -= 100;
-					barraVidaPadawan.update(umPadawan.energia);
+					umPadawan.vida -= 100;
+					barraVidaPadawan.update(umPadawan.vida);
 					umPadawan.morte();
 					stopGame(); //chama a função quando a personagem morre
 				}}else if(umNemoidian.andar());
@@ -562,8 +568,8 @@ function update2(){
 					if(umInimigo_Cantina.hitTestRectangle(osLasers[i])&&!umHanSolo.isColliding){
 						umInimigo_Cantina.isColliding=true; 
 						osLasers[i].active=false;     //faz os lasers desaparecer quando bate no inimigo
-						umInimigo_Cantina.energia -= osLasers[i].danolaser;
-						barraVidaInimigo_Cantina.update2(umInimigo_Cantina.energia);
+						umInimigo_Cantina.vida -= osLasers[i].danolaser;
+						barraVidaInimigo_Cantina.update2(umInimigo_Cantina.vida);
 						
 					}} else {
 						umInimigo_Cantina.atingido();
@@ -580,8 +586,8 @@ function update2(){
 					if(!umHanSolo.killed){	
 					umInimigo_Cantina.atacar();
 					umInimigo_Cantina.x-=3;
-					umHanSolo.energia -= 100;
-					barraVidaHanSolo.update2(umHanSolo.energia);
+					umHanSolo.vida -= 100;
+					barraVidaHanSolo.update2(umHanSolo.vida);
 					umHanSolo.morte();
 					stopGame2(); //chama a função quando a personagem morre
 				}}else if(umInimigo_Cantina.andar());
@@ -621,7 +627,7 @@ function update2(){
 
 		clearArrays2(); // limpar os arrays
 
-		animationHandler=window.requestAnimationFrame(update2); //Permite mexer o anakin 
+		animationHandler=window.requestAnimationFrame(update2); 
     }
 
 }
@@ -690,9 +696,9 @@ function update2(){
 					}
 					//camera.drawFrame(drawingSurface, true);
 		
-					barraVidaInimigo_Cantina.render();
-					barraVidaHanSolo.render();
-					gameTimer.render();
+					barraVidaInimigo_Cantina.render2();
+					barraVidaHanSolo.render2();
+					gameTimer.render2();
 				}
 
     })();
