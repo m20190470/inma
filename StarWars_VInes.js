@@ -70,7 +70,7 @@
 	//var andou = false;
 	var animationHandler;
 	var barraVidaPadawan = undefined;
-	var barraVidaHanSolo = undefined;
+	var barraVidaHanSolo = undefined
 	var barraVidaNemoidian = undefined;
 	var barraVidaInimigo_Cantina = undefined;
 	var gameTimer = undefined;
@@ -80,16 +80,14 @@
 	var assets = [];
 
 	var GameSounds = {
-
 		AMBIENTE: {}
 	};
-
+	
 	/* var GameSoundsHan = {
-
 		HAN_SOLO: {},
 		LASER: {},
 		AMBIENTE: {}
-	};*/
+	}; */
 	
     
     var GameStates = {
@@ -155,26 +153,12 @@
 		assets.push(spInimigo_Cantina);
 
 		//carregar os sons
-
 		gSoundManager.loadAsync("sounds/Intro.mp3", function (so) {
-			GameSounds.AMBIENTE.INTRO = so;
-			loaded("sounds/Intro.mp3")
-        });
-
-		gSoundManager.loadAsync("sounds/Nivel2_Fundo.mp3", function (so) {
-			GameSounds.AMBIENTE.FUNDO = so;
-			loaded("sounds/Nivel2_Fundo.mp3")
-		});
-		assets.push(GameSounds.AMBIENTE.FUNDO);
-
-		gSoundManager.loadAsync("sounds/Tiro_HanSolo.mp3", function (so) {
-			GameSounds.HAN_SOLO.Ataque = so;
-			loaded("sounds/Tiro_HanSolo.mp3")
+		GameSounds.AMBIENTE.INTRO = so;
+		loaded("sounds/Intro.mp3")
 
 		
 	});
-
-
 	assets.push(GameSounds.AMBIENTE.INTRO);
 
 		gSoundManager.loadAsync("sounds/Som_Fundo.mp3", function (so) {
@@ -195,18 +179,18 @@
 	});
 	assets.push(GameSounds.AMBIENTE.FUNDO);
 
-	gSoundManager.loadAsync("sounds/Tiro_HanSolo.mp3", function (so) {
+	/* gSoundManager.loadAsync("sounds/Tiro_HanSolo.mp3", function (so) {
 		GameSounds.HAN_SOLO.Ataque = so;
 		loaded("sounds/Tiro_HanSolo.mp3")
 
 
-	});
+	}); */
 
 	gSoundManager.loadAsync("sounds/Final.mp3", function (so) {
 		GameSounds.AMBIENTE.FINAL = so;
 		loaded("sounds/Final.mp3")
 	});
-	//assets.push(GameSounds.HAN_SOLO.Ataque);
+	/* assets.push(GameSounds.HAN_SOLO.Ataque);*/
 }
 
         function loaded(assetName) {
@@ -219,13 +203,13 @@
 
         // Se já conseguimos chegar aqui, os assets estão carregados! Podemos começar a criar 
 		// e configurar os elementos do jogo
-		assetsLoadInfo.innerHTML = "Jogo Carregado! Por favor pressione qualquer letra/número para iniciar o jogo...";
+		assetsLoadInfo.innerHTML = "Jogo Carregado! Por favor escolha a sua personagem para iniciar o jogo...";
 		
 		gameState = GameStates.LOADED;
 		//update();
 
 		GameSounds.AMBIENTE.INTRO.play(true, 1);
-        //window.addEventListener("keypress",setupGame,false); // espera por uma tecla pressionada para começar
+       // window.addEventListener("keypress",setupGame,false); // espera por uma tecla pressionada para começar
 
 		document.getElementById("charPadawan").addEventListener("mousedown", setupGame);
 		document.getElementById("charHan").addEventListener("mousedown", setupGame2);
@@ -468,8 +452,8 @@
 					if(umNemoidian.hitTestRectangle(osLancamentos[i])&&!umPadawan.isColliding){
 						umNemoidian.isColliding=true; 
 						osLancamentos[i].active=false;     //faz os lasers desaparecer quando bate no inimigo
-						umNemoidian.vida -= osLancamentos[i].danolightsaber;
-						barraVidaNemoidian.update(umNemoidian.vida);
+						umNemoidian.energia -= osLancamentos[i].danolightsaber;
+						barraVidaNemoidian.update(umNemoidian.energia);
 						
 					}} else {
 						umNemoidian.atingido();
@@ -489,8 +473,8 @@
 					if(!umPadawan.killed){	
 					umNemoidian.ataque();
 					umNemoidian.x-=3;
-					umPadawan.vida -= 100;
-					barraVidaPadawan.update(umPadawan.vida);
+					umPadawan.energia -= 100;
+					barraVidaPadawan.update(umPadawan.energia);
 					umPadawan.morte();
 					stopGame(); //chama a função quando a personagem morre
 				}}else if(umNemoidian.andar());
@@ -578,8 +562,8 @@ function update2(){
 					if(umInimigo_Cantina.hitTestRectangle(osLasers[i])&&!umHanSolo.isColliding){
 						umInimigo_Cantina.isColliding=true; 
 						osLasers[i].active=false;     //faz os lasers desaparecer quando bate no inimigo
-						umInimigo_Cantina.vida -= osLasers[i].danolaser;
-						barraVidaInimigo_Cantina.update2(umInimigo_Cantina.vida);
+						umInimigo_Cantina.energia -= osLasers[i].danolaser;
+						barraVidaInimigo_Cantina.update2(umInimigo_Cantina.energia);
 						
 					}} else {
 						umInimigo_Cantina.atingido();
@@ -596,8 +580,8 @@ function update2(){
 					if(!umHanSolo.killed){	
 					umInimigo_Cantina.atacar();
 					umInimigo_Cantina.x-=3;
-					umHanSolo.vida -= 100;
-					barraVidaHanSolo.update2(umHanSolo.vida);
+					umHanSolo.energia -= 100;
+					barraVidaHanSolo.update2(umHanSolo.energia);
 					umHanSolo.morte();
 					stopGame2(); //chama a função quando a personagem morre
 				}}else if(umInimigo_Cantina.andar());
@@ -637,7 +621,7 @@ function update2(){
 
 		clearArrays2(); // limpar os arrays
 
-		animationHandler=window.requestAnimationFrame(update2); //Permite mexer o anakin
+		animationHandler=window.requestAnimationFrame(update2); //Permite mexer o anakin 
     }
 
 }
@@ -706,9 +690,9 @@ function update2(){
 					}
 					//camera.drawFrame(drawingSurface, true);
 		
-					barraVidaInimigo_Cantina.render2();
-					barraVidaHanSolo.render2();
-					gameTimer.render2();
+					barraVidaInimigo_Cantina.render();
+					barraVidaHanSolo.render();
+					gameTimer.render();
 				}
 
     })();
